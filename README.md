@@ -272,9 +272,9 @@ streamlit run web/app.py
 
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
-| `llm_provider` | `"openai"` | LLM 提供商：`openai` / `anthropic` / `google` |
-| `deep_think_llm` | `"gpt-5.4"` | Research Manager + Portfolio Manager 用的模型 |
-| `quick_think_llm` | `"gpt-5.4-mini"` | 所有 Analyst / Researcher / Trader 用的模型 |
+| `llm_provider` | `"minimax"` | LLM 提供商：`minimax` / `deepseek` / `qwen` / `glm` / `openai` / `anthropic` / `google` / `xai` / `ollama` |
+| `deep_think_llm` | `"MiniMax-M2.7"` | Research Manager + Portfolio Manager 用的模型 |
+| `quick_think_llm` | `"MiniMax-M2.7-highspeed"` | 所有 Analyst / Researcher / Trader 用的模型 |
 | `backend_url` | `None` | 自定义 API 端点（Kimi、deepseek 等兼容 API） |
 | `output_language` | `"Chinese"` | 报告输出语言（内部辩论始终英文） |
 | `max_debate_rounds` | `1` | Bull vs Bear 辩论轮数 |
