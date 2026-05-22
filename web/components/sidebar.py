@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from datetime import date
 
 import streamlit as st
@@ -25,6 +26,28 @@ _PROVIDERS: list[tuple[str, str]] = [
 _PROVIDER_DISPLAY = [name for name, _ in _PROVIDERS]
 _PROVIDER_KEYS = [key for _, key in _PROVIDERS]
 
+# Map provider keys to their API key environment variable names
+_PROVIDER_API_KEY_ENV: dict[str, str] = {
+    "minimax": "MINIMAX_API_KEY",
+    "deepseek": "DEEPSEEK_API_KEY",
+    "qwen": "DASHSCOPE_API_KEY",
+    "glm": "ZHIPU_API_KEY",
+    "openai": "OPENAI_API_KEY",
+    "anthropic": "ANTHROPIC_API_KEY",
+    "google": "GOOGLE_API_KEY",
+    "xai": "XAI_API_KEY",
+    "ollama": "",
+}
+
+
+def _default_provider_index() -> int:
+    """Return the index of the first provider that has an API key configured."""
+    for i, key in enumerate(_PROVIDER_KEYS):
+        env_var = _PROVIDER_API_KEY_ENV.get(key, "")
+        if env_var and os.environ.get(env_var):
+            return i
+    return 0
+
 
 def _resolve_user_input(raw: str) -> tuple[str, str | None]:
     """Resolve raw user input to (ticker_code, error_msg).
@@ -44,10 +67,14 @@ def _resolve_user_input(raw: str) -> tuple[str, str | None]:
 def _render_llm_config() -> None:
     """Render LLM provider and model selection controls."""
 
+    if "llm_provider_idx" not in st.session_state:
+        st.session_state["llm_provider_idx"] = _default_provider_index()
+
     provider_idx = st.selectbox(
         "LLM 供应商",
         range(len(_PROVIDERS)),
         format_func=lambda i: _PROVIDER_DISPLAY[i],
+        index=st.session_state["llm_provider_idx"],
         key="llm_provider_idx",
         help="选择你配置了 API Key 的供应商",
     )

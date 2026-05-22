@@ -88,11 +88,16 @@ def render_report(
 
     st.markdown("---")
 
+    final_decision = final_state.get("final_trade_decision", "")
+    if final_decision:
+        st.markdown("### 🎯 最终决策")
+        st.markdown(_strip_think(str(final_decision)))
+        st.markdown("---")
+
     inv_plan = final_state.get("investment_plan", "")
     if inv_plan:
-        st.markdown("### 👔 最终投资建议")
-        st.markdown(_strip_think(str(inv_plan)))
-        st.markdown("---")
+        with st.expander("👔 最终投资建议（详细计划）", expanded=False):
+            st.markdown(_strip_think(str(inv_plan)))
 
     st.markdown("### 📊 分析师报告")
 
